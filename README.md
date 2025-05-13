@@ -1,3 +1,3 @@
-# GitBook-MySQL
+# GitBook-MariaDB
 
 test
