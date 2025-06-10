@@ -1,93 +1,186 @@
-# 📘 Datenbankprojekt mit MariaDB
 
-## 🧭 1. Einleitung
+# 📘 MariaDB-Dokumentation: Schulprojekt
 
-MariaDB ist ein relationales Datenbankmanagementsystem (RDBMS), das auf MySQL basiert und als Open-Source-Projekt weiterentwickelt wird. In der heutigen Softwareentwicklung ist der Umgang mit relationalen Datenbanken eine Kernkompetenz, da sie in nahezu jeder Anwendung zur Speicherung strukturierter Daten verwendet werden.
+## 1. Einleitung
 
-In dieser Dokumentation zeigen wir anhand eines konkreten Beispiels, wie man eine relationale Datenbank mit MariaDB plant, aufbaut und nutzt. Dabei lernst du:
+MariaDB ist ein weit verbreitetes, freies relationales Datenbanksystem. Es basiert auf MySQL, wurde aber vollständig Open Source weiterentwickelt. Im schulischen Kontext setzen wir MariaDB ein, um Daten effizient zu speichern, zu verwalten und über SQL gezielt abzufragen.
 
-- die Grundlagen relationaler Datenbanken,
-- wie du eine eigene Datenbank mit SQL aufbaust,
-- wie Tabellen miteinander in Beziehung gesetzt werden,
-- wie man mit SQL-Daten abfragt, einfügt und verändert,
-- Best Practices für den Umgang mit Datenbanken.
+## 2. Grundbegriffe
 
-Unser Beispielprojekt basiert auf einem typischen Schulsystem mit Schüler:innen, Lehrpersonen, Fächern und Noten.
+| Begriff | Erklärung |
+|--------|-----------|
+| **Tabelle** | Strukturierte Sammlung von Daten in Zeilen und Spalten |
+| **Spalte (Attribut)** | Eigenschaft oder Merkmal eines Datensatzes |
+| **Zeile (Datensatz)** | Eintrag in einer Tabelle |
+| **Primärschlüssel (Primary Key)** | Eindeutige Identifikation einer Zeile |
+| **Fremdschlüssel (Foreign Key)** | Verweis auf einen Schlüssel in einer anderen Tabelle |
+| **Relation** | Beziehung zwischen zwei Tabellen |
 
-## 🧱 2. Grundlagen relationaler Datenbanken
+## 3. Datenbankmodellierung
 
-Relationale Datenbanken speichern Daten in **Tabellen**, die miteinander in Beziehung stehen. Die wichtigsten Begriffe:
+### 3.1 ER-Diagramm
 
-| Begriff         | Bedeutung                                                                  |
-|-----------------|---------------------------------------------------------------------------|
-| **Tabelle**     | Sammlung von Datensätzen mit gleicher Struktur (z. B. `schueler`, `noten`) |
-| **Zeile**       | Ein einzelner Datensatz                                                   |
-| **Spalte**      | Ein Datenfeld (z. B. `name`, `geburtsdatum`)                              |
-| **Primary Key** | Eindeutiger Identifikator einer Zeile                                     |
-| **Foreign Key** | Verknüpfung zu einem Primary Key einer anderen Tabelle                    |
+Bevor man eine Datenbank erstellt, plant man mit einem **Entity-Relationship-Modell (ERM)**:
 
-Ein gutes Datenbankdesign sorgt für:
+- **Entität**: z. B. Schüler:in, Fach, Lehrer:in
+- **Beziehung**: z. B. „Schüler:in bekommt Note in Fach“
+- **Attribute**: z. B. Vorname, Nachname, Geburtsdatum
 
-- **Konsistenz**: keine Widersprüche in den Daten,
-- **Reduktionsfreiheit**: keine doppelten Daten (Normalisierung),
-- **Skalierbarkeit**: auch bei vielen Datensätzen performant.
+### 3.2 Normalisierung
 
-> ⚠️ **Beispiel**: Eine Tabelle `noten` sollte nicht die Namen der Schüler:innen enthalten – sondern nur deren `schueler_id` als Foreign Key.
+Durch **Normalisierung** vermeidet man doppelte Daten. Die wichtigsten Normalformen:
 
-## 💾 3. MariaDB installieren und verwenden
+1. **1NF**: Nur atomare Werte (keine Listen)
+2. **2NF**: Jedes Nicht-Schlüsselattribut hängt vollständig vom Schlüssel ab
+3. **3NF**: Keine transitive Abhängigkeit zwischen Nicht-Schlüsselattributen
 
-### 📥 Installation (lokal)
+## 4. Installation & Tools
 
-Für die Arbeit mit MariaDB benötigst du eine lokale Datenbankumgebung. Optionen:
+- **MariaDB** installieren (z. B. via XAMPP, MAMP, Docker)
+- **DBeaver** als grafisches Verwaltungs-Tool verwenden
+- Alternativ: **MySQL Workbench**, **HeidiSQL**, **phpMyAdmin**
 
-- **Windows**: [XAMPP](https://www.apachefriends.org/index.html) oder MariaDB Installer
-- **macOS**: Homebrew: `brew install mariadb`
-- **Linux**: Paketmanager (z. B. `apt install mariadb-server`)
+## 5. Beispielprojekt: Schul-Datenbank
 
-### 🖥️ Verbindung zur Datenbank
+### 🧩 Ziel des Projekts
 
-- **Command Line (CLI)**:
+Wir bauen eine relationale Datenbank, mit der eine Schule ihre Daten verwalten kann. Die Datenbank enthält Informationen zu:
 
-```bash
-mariadb -u root -p
+- Schüler:innen (`schueler`)
+- Lehrpersonen (`lehrer`)
+- Fächern (`faecher`)
+- Noten (`noten`)
+- Klassen (`klassen`)
+- Unterricht (`unterricht`)
+- Räume (`raeume`)
+- Lehrer-Fächer-Zuordnung (`lehrer_faecher`)
+
+### 🔗 Entity-Relationship-Modell (ER-Modell)
+
+Ein vereinfachtes ER-Modell sieht so aus:
+
+```
+lehrer --------< lehrer_faecher >-------- faecher
+    |                                    |
+    |                                    |
+unterricht --------< noten >-------- schueler
+     |
+  klasse
 ```
 
-- **GUI-Tools**:
+### 🧱 SQL: Datenbankstruktur
 
-  - [DBeaver](https://dbeaver.io/) (empfohlen)
-  - HeidiSQL
-  - phpMyAdmin
-
-## 📊 4. Erste SQL-Befehle – Datenbank erstellen
+Ein Auszug aus dem SQL-Skript zur Erstellung der wichtigsten Tabellen:
 
 ```sql
--- Datenbank erstellen
-CREATE DATABASE schule_db;
-USE schule_db;
+CREATE TABLE klassen (
+  klasse_id INT AUTO_INCREMENT PRIMARY KEY,
+  bezeichnung VARCHAR(20)
+);
 
--- Tabelle 'schueler' erstellen
 CREATE TABLE schueler (
   schueler_id INT AUTO_INCREMENT PRIMARY KEY,
   vorname VARCHAR(50),
   nachname VARCHAR(50),
   geburtsdatum DATE,
-  klasse_id INT
+  klasse_id INT,
+  FOREIGN KEY (klasse_id) REFERENCES klassen(klasse_id)
+);
+
+CREATE TABLE faecher (
+  fach_id INT AUTO_INCREMENT PRIMARY KEY,
+  bezeichnung VARCHAR(50)
+);
+
+CREATE TABLE lehrer (
+  lehrer_id INT AUTO_INCREMENT PRIMARY KEY,
+  vorname VARCHAR(50),
+  nachname VARCHAR(50)
+);
+
+CREATE TABLE lehrer_faecher (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  lehrer_id INT,
+  fach_id INT,
+  FOREIGN KEY (lehrer_id) REFERENCES lehrer(lehrer_id),
+  FOREIGN KEY (fach_id) REFERENCES faecher(fach_id)
 );
 ```
 
-### Weitere wichtige SQL-Befehle:
+### 🗃️ Inserts (Beispieldaten)
 
-| Befehl   | Zweck               |
-|----------|---------------------|
-| `INSERT` | Datensätze einfügen |
-| `SELECT` | Daten abfragen      |
-| `UPDATE` | Daten verändern     |
-| `DELETE` | Daten löschen       |
+```sql
+INSERT INTO klassen (bezeichnung) VALUES ('1A'), ('1B');
+INSERT INTO schueler (vorname, nachname, geburtsdatum, klasse_id)
+VALUES ('Lina', 'Muster', '2007-03-04', 1);
+INSERT INTO lehrer (vorname, nachname) VALUES ('Max', 'Huber');
+INSERT INTO faecher (bezeichnung) VALUES ('Mathematik');
+INSERT INTO lehrer_faecher (lehrer_id, fach_id) VALUES (1, 1);
+```
 
-## 📘 Fortsetzung
+## 6. Erweiterte SQL-Abfragen
 
-Wenn du willst, schreibe ich als Nächstes weiter an:
+### 📎 JOINs – Tabellen verknüpfen
 
-- Kapitel 5: Beispielprojekt – Schul-Datenbank (ER-Modell, SQL, Inserts)
-- Kapitel 6: Komplexe Abfragen (`JOIN`, `GROUP BY` etc.)
-- Kapitel 7–9: Best Practices, Vergleich, Glossar
+Beispiel: Welche Schüler:innen haben in welchem Fach welche Note?
+
+```sql
+SELECT s.vorname, s.nachname, f.bezeichnung AS fach, n.note
+FROM noten n
+JOIN schueler s ON s.schueler_id = n.schueler_id
+JOIN faecher f ON f.fach_id = n.fach_id;
+```
+
+### 📊 Gruppieren & Aggregieren
+
+Beispiel: Durchschnittsnote pro Fach
+
+```sql
+SELECT f.bezeichnung, AVG(n.note) AS durchschnitt
+FROM noten n
+JOIN faecher f ON f.fach_id = n.fach_id
+GROUP BY f.bezeichnung;
+```
+
+### 🧯 Fehlerquellen vermeiden
+
+- `NULL`-Werte beachten bei Aggregationen
+- Immer `FOREIGN KEYs` korrekt setzen
+- Einfüge-Reihenfolge beachten (Eltern zuerst, Kinder danach)
+
+## 7. Best Practices
+
+| Best Practice                    | Erklärung |
+|----------------------------------|-----------|
+| Normalisierung beachten          | Redundanzen vermeiden |
+| sprechende Namen verwenden       | z. B. `schueler_id` statt `id` |
+| Primär- und Fremdschlüssel nutzen | für Datenintegrität |
+| Transaktionen bei Änderungen     | bei komplexen Inserts/Updates |
+| Regelmässige Backups             | bei echten Systemen Pflicht |
+
+## 8. Vergleich: MariaDB vs. MySQL vs. SQLite
+
+| Feature            | MariaDB         | MySQL            | SQLite           |
+|--------------------|------------------|------------------|------------------|
+| Lizenz             | Open Source      | Teilweise Open   | Open Source      |
+| Skalierbarkeit     | Hoch             | Hoch             | Gering           |
+| Anfängerfreundlich | Gut              | Mittel           | Sehr gut         |
+| SQL-Kompatibilität | Hoch             | Hoch             | Eingeschränkt    |
+| Verwendung         | Server           | Server           | Local / Mobile   |
+
+Fazit: **MariaDB** ist für unser Projekt ideal – serverfähig, flexibel, offen und sehr MySQL-kompatibel.
+
+## 9. Glossar
+
+| Begriff          | Definition                                                                 |
+|------------------|----------------------------------------------------------------------------|
+| **RDBMS**         | Relational Database Management System                                      |
+| **SQL**           | Structured Query Language – Abfragesprache für Datenbanken                |
+| **PRIMARY KEY**   | Einzigartiger Identifikator für eine Zeile in einer Tabelle               |
+| **FOREIGN KEY**   | Verweis auf einen Primary Key einer anderen Tabelle                        |
+| **JOIN**          | SQL-Befehl zum Verknüpfen mehrerer Tabellen                               |
+| **Normalisierung**| Technik zur Vermeidung von Datenredundanz und Inkonsistenz                |
+
+## ✅ Abschluss
+
+Mit dieser Dokumentation hast du die wichtigsten technischen Grundlagen von MariaDB kennengelernt und gelernt, wie man eine relationale Datenbank entwirft, erstellt, abfragt und erweitert. Das Schulbeispiel dient als solide Basis für eigene Projekte oder den Einstieg in komplexere Datenbankanwendungen.
