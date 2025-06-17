@@ -16,6 +16,11 @@ MariaDB ist ein weit verbreitetes, freies relationales Datenbanksystem. Es basie
 | **Fremdschlüssel (Foreign Key)** | Verweis auf einen Schlüssel in einer anderen Tabelle |
 | **Relation** | Beziehung zwischen zwei Tabellen |
 
+### Aufgaben zu Kapitel 2: Grundbegriffe
+
+1. Wie definierst du in SQL einen Primärschlüssel für eine Spalte?  
+2. Wie setzt man in einer Tabelle einen Fremdschlüssel auf eine andere Tabelle?
+
 ## 3. Datenbankmodellierung
 
 ### 3.1 ER-Diagramm
@@ -39,6 +44,10 @@ Durch **Normalisierung** vermeidet man doppelte Daten. Die wichtigsten Normalfor
 - **MariaDB** installieren (z. B. via XAMPP, MAMP, Docker)
 - **DBeaver** als grafisches Verwaltungs-Tool verwenden
 - Alternativ: **MySQL Workbench**, **HeidiSQL**, **phpMyAdmin**
+
+### Aufgaben zu Kapitel 4: Installation & Tools
+
+1. Wie kannst du in MariaDB eine Datenbank sichern (Backup)? Nenne kurz das gängige Tool oder den Befehl.
 
 ## 5. Beispielprojekt: Schul-Datenbank
 
@@ -118,6 +127,14 @@ INSERT INTO faecher (bezeichnung) VALUES ('Mathematik');
 INSERT INTO lehrer_faecher (lehrer_id, fach_id) VALUES (1, 1);
 ```
 
+### Aufgaben zu Kapitel 5: Beispielprojekt
+1. Wie lautet der SQL-Befehl, um eine neue Tabelle namens klassen zu erstellen?
+
+2. Mit welchem SQL-Befehl fügst du einen neuen Schüler in die Tabelle schueler ein?
+
+3. Nenne den SQL-Befehl, um alle Daten aus der Tabelle lehrer abzurufen.
+
+
 ## 6. Erweiterte SQL-Abfragen
 
 ### 📎 JOINs – Tabellen verknüpfen
@@ -148,6 +165,12 @@ GROUP BY f.bezeichnung;
 - Immer `FOREIGN KEYs` korrekt setzen
 - Einfüge-Reihenfolge beachten (Eltern zuerst, Kinder danach)
 
+### Aufgaben zu Kapitel 6: Erweiterte SQL-Abfragen
+1. Wie verknüpft man zwei Tabellen in einer Abfrage mit JOIN? Nenne das Grundformat des Befehls.
+
+2. Welcher Befehl zeigt den Durchschnittswert einer Spalte in SQL an?
+
+
 ## 7. Best Practices
 
 | Best Practice                    | Erklärung |
@@ -158,6 +181,12 @@ GROUP BY f.bezeichnung;
 | Transaktionen bei Änderungen     | bei komplexen Inserts/Updates |
 | Regelmässige Backups             | bei echten Systemen Pflicht |
 
+### Aufgaben zu Kapitel 7: Best Practices
+1. Nenne den SQL-Befehl, um Daten in der Tabelle faecher zu ändern (Update).
+
+2. Welcher Befehl löscht alle Datensätze aus einer Tabelle, ohne die Tabelle selbst zu löschen?
+
+   
 ## 8. Vergleich: MariaDB vs. MySQL vs. SQLite
 
 | Feature            | MariaDB         | MySQL            | SQLite           |
