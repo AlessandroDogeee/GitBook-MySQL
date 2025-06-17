@@ -210,6 +210,109 @@ Fazit: **MariaDB** ist für unser Projekt ideal – serverfähig, flexibel, offe
 | **JOIN**          | SQL-Befehl zum Verknüpfen mehrerer Tabellen                               |
 | **Normalisierung**| Technik zur Vermeidung von Datenredundanz und Inkonsistenz                |
 
+# Lösungen mit Kapitelzuordnung
+
+Hier findest du die Lösungen zu den Aufgaben, geordnet nach Kapiteln, mit direkten und präzisen Antworten.
+
+## Kapitel 2: Grundbegriffe
+
+### Aufgabe 1: Primärschlüssel definieren
+Definiere einen Primärschlüssel für eine Tabelle.
+
+```sql
+PRIMARY KEY (spaltenname)
+```
+
+### Aufgabe 2: Fremdschlüssel setzen
+Setze einen Fremdschlüssel, der auf eine andere Tabelle verweist.
+
+```sql
+FOREIGN KEY (fremdspalte) REFERENCES andere_tabelle(spalte)
+```
+
+### Aufgabe 3: Ziel der Normalisierung
+Beschreibe das Ziel der Normalisierung in Datenbanken.
+
+**Lösung:**  
+Redundanzen und Inkonsistenzen vermeiden.
+
+### Aufgabe 4: Beispiel Entität
+Nenne ein Beispiel für eine Entität in einer Schul-Datenbank.
+
+**Lösung:**  
+Schüler:in (oder Fach, Lehrer:in).
+
+## Kapitel 4: Installation & Tools
+
+### Aufgabe 5: Datenbank sichern mit `mysqldump`
+Erstelle ein Backup einer Datenbank mit `mysqldump`.
+
+```bash
+mysqldump -u benutzername -p datenbankname > backup.sql
+```
+
+## Kapitel 5: Beispielprojekt: Schul-Datenbank
+
+### Aufgabe 6: Tabelle `klassen` erstellen
+Erstelle eine Tabelle `klassen` mit einer ID und einer Bezeichnung.
+
+```sql
+CREATE TABLE klassen (
+  klasse_id INT AUTO_INCREMENT PRIMARY KEY,
+  bezeichnung VARCHAR(20)
+);
+```
+
+### Aufgabe 7: Neuen Schüler einfügen
+Füge einen neuen Schüler in die Tabelle `schueler` ein.
+
+```sql
+INSERT INTO schueler (vorname, nachname, geburtsdatum, klasse_id)
+VALUES ('Max', 'Muster', '2008-01-01', 1);
+```
+
+### Aufgabe 8: Alle Lehrer abfragen
+Erstelle eine Abfrage, um alle Lehrer anzuzeigen.
+
+```sql
+SELECT * FROM lehrer;
+```
+
+## Kapitel 6: Erweiterte SQL-Abfragen
+
+### Aufgabe 9: Tabellen verbinden mit JOIN
+Verbinde zwei Tabellen mit einem JOIN.
+
+```sql
+SELECT * FROM tabelle1
+JOIN tabelle2 ON tabelle1.spalte = tabelle2.spalte;
+```
+
+### Aufgabe 10: Durchschnitt berechnen
+Berechne den Durchschnitt einer Spalte.
+
+```sql
+SELECT AVG(spaltenname) FROM tabelle;
+```
+
+### Aufgabe 11: Daten ändern mit UPDATE
+Ändere Daten in einer Tabelle mit einer Bedingung.
+
+```sql
+UPDATE tabellenname
+SET spalte = wert
+WHERE bedingung;
+```
+
+### Aufgabe 12: Alle Daten löschen mit DELETE
+Lösche alle Daten aus einer Tabelle.
+
+```sql
+DELETE FROM tabellenname;
+```
+
 ## ✅ Abschluss
 
 Mit dieser Dokumentation hast du die wichtigsten technischen Grundlagen von MariaDB kennengelernt und gelernt, wie man eine relationale Datenbank entwirft, erstellt, abfragt und erweitert. Das Schulbeispiel dient als solide Basis für eigene Projekte oder den Einstieg in komplexere Datenbankanwendungen.
+
+
